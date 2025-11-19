@@ -1,0 +1,22 @@
+# .NET
+BusReservationApi/bin/
+BusReservationApi/obj/
+BusReservationApi/*.db
+BusReservationApi/*.db-shm
+BusReservationApi/*.db-wal
+
+# Angular
+BusReservationUI/node_modules/
+BusReservationUI/dist/
+BusReservationUI/.angular/
+
+# IDE
+.vs/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
