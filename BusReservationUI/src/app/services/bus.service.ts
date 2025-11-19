@@ -27,12 +27,12 @@ export interface BookingRequest {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BusService {
-  private apiUrl = 'http://localhost:5000/api';
+  private apiUrl = 'https://localhost:7015/api';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getStations(): Observable<Station[]> {
     return this.http.get<Station[]>(`${this.apiUrl}/stations`);

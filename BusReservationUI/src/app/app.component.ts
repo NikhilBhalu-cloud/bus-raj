@@ -9,7 +9,7 @@ import { BusService, Station, RouteResult } from './services/bus.service';
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
   title = 'Bus Reservation System';
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   searchPerformed: boolean = false;
   bookingMessage: string = '';
 
-  constructor(private busService: BusService) { }
+  constructor(private busService: BusService) {}
 
   ngOnInit() {
     this.loadStations();
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
       error: (error) => {
         console.error('Error loading stations:', error);
         alert('Error loading stations. Please make sure the API is running.');
-      }
+      },
     });
   }
 
@@ -50,26 +50,28 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.busService.searchRoutes({
-      source: this.selectedSource,
-      destination: this.selectedDestination
-    }).subscribe({
-      next: (data) => {
-        this.routes = data;
-        this.searchPerformed = true;
-        this.bookingMessage = '';
-        this.selectedSeats = {};
-      },
-      error: (error) => {
-        console.error('Error searching routes:', error);
-        alert('Error searching routes');
-      }
-    });
+    this.busService
+      .searchRoutes({
+        source: this.selectedSource,
+        destination: this.selectedDestination,
+      })
+      .subscribe({
+        next: (data) => {
+          this.routes = data;
+          this.searchPerformed = true;
+          this.bookingMessage = '';
+          this.selectedSeats = {};
+        },
+        error: (error) => {
+          console.error('Error searching routes:', error);
+          alert('Error searching routes');
+        },
+      });
   }
 
   bookRoute(route: RouteResult) {
     const seats = this.selectedSeats[route.routeId] || 0;
-    
+
     if (seats <= 0) {
       alert('Please select number of seats');
       return;
@@ -80,21 +82,22 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.busService.bookSeats({
-      routeId: route.routeId,
-      source: this.selectedSource,
-      destination: this.selectedDestination,
-      seats: seats
-    }).subscribe({
-      next: (response) => {
-        this.bookingMessage = `Booking successful! ${seats} seat(s) booked on ${route.routeName}`;
-        // Refresh search results to show updated available seats
-        this.searchRoutes();
-      },
-      error: (error) => {
-        console.error('Error booking seats:', error);
-        alert('Error booking seats');
-      }
-    });
+    this.busService
+      .bookSeats({
+        routeId: route.routeId,
+        source: this.selectedSource,
+        destination: this.selectedDestination,
+        seats: seats,
+      })
+      .subscribe({
+        next: (response) => {
+          this.bookingMessage = `Booking successful! ${seats} seats booked on ${route.routeName}`;
+          this.searchRoutes();
+        },
+        error: (error) => {
+          console.error('Error booking seats:', error);
+          alert('Error booking seats');
+        },
+      });
   }
 }

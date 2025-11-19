@@ -1,6 +1,6 @@
 <div class="container">
   <h1>{{ title }}</h1>
-  
+
   <div class="search-section">
     <h2>Search Bus</h2>
     <div class="search-form">
@@ -8,47 +8,62 @@
         <label for="source">Source Station:</label>
         <select id="source" [(ngModel)]="selectedSource" class="form-control">
           <option value="">Select Source</option>
-          <option *ngFor="let station of stations" [value]="station.name">{{ station.name }}</option>
+          <option *ngFor="let station of stations" [value]="station.name">
+            {{ station.name }}
+          </option>
         </select>
       </div>
-      
+
       <div class="form-group">
         <label for="destination">Destination Station:</label>
-        <select id="destination" [(ngModel)]="selectedDestination" class="form-control">
+        <select
+          id="destination"
+          [(ngModel)]="selectedDestination"
+          class="form-control"
+        >
           <option value="">Select Destination</option>
-          <option *ngFor="let station of stations" [value]="station.name">{{ station.name }}</option>
+          <option *ngFor="let station of stations" [value]="station.name">
+            {{ station.name }}
+          </option>
         </select>
       </div>
-      
+
       <button (click)="searchRoutes()" class="btn btn-primary">Search</button>
     </div>
   </div>
 
   <div class="results-section" *ngIf="searchPerformed">
     <h2>Available Routes</h2>
-    
+
     <div class="success-message" *ngIf="bookingMessage">
       {{ bookingMessage }}
     </div>
-    
+
     <div *ngIf="routes.length === 0" class="no-results">
       No routes found for the selected source and destination.
     </div>
-    
+
     <div *ngFor="let route of routes" class="route-card">
       <h3>{{ route.routeName }}</h3>
-      <p>Available Seats: <strong>{{ route.availableSeats }}</strong> / {{ route.totalSeats }}</p>
-      
+      <p>
+        Available Seats: <strong>{{ route.availableSeats }}</strong> /
+        {{ route.totalSeats }}
+      </p>
+
       <div class="booking-section">
         <label>Number of Seats:</label>
-        <input type="number" 
-               [(ngModel)]="selectedSeats[route.routeId]" 
-               min="1" 
-               [max]="route.availableSeats"
-               class="form-control seat-input">
-        <button (click)="bookRoute(route)" 
-                class="btn btn-success"
-                [disabled]="route.availableSeats === 0">
+        <input
+          type="number"
+          [(ngModel)]="selectedSeats[route.routeId]"
+          min="1"
+          [max]="route.availableSeats"
+          class="form-control seat-input"
+        />
+        <button
+          (click)="bookRoute(route)"
+          class="btn btn-success"
+          [disabled]="route.availableSeats === 0"
+        >
           Book
         </button>
       </div>
